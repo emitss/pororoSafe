@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json()); //para manejar JSON en las peticiones
 app.use("/api/auth", authRoutes); // rutas de autenticación
-app.use("/api/movies", movieRoutes);
-app.use("/api/favorites", favoriteRoutes);
+app.use("/api", movieRoutes);
+app.use("/api", favoriteRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

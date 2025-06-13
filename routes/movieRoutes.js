@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { getMovies } = require("../controllers/movieController");
-//const authenticate = require("../middleware/authMiddleware");
+const verifyToken = require("../middlewares/authMiddleware");
 
-router.get("/", getMovies);
-//router.get("/", authenticate, getMovies);
+router.get("/movies", verifyToken, getMovies);
 
 module.exports = router;

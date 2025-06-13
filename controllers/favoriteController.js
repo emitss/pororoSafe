@@ -1,62 +1,108 @@
 const fs = require("fs").promises;
-const FAVORITES_FILE = "./data/favoritos.txt";
+const path = require("path");
 
-// POST /api/favorites – Agregar una película a favoritos
-const addFavorite = async (req, res) => {
-  const movie = req.body;
+const FAVORITES_FILE = path.join(__dirname, "..", "data", "favoritos.txt");
 
-  if (!movie || !movie.id) {
-    return res.status(400).json({ error: "Datos de película inválidos" });
-  }
-
+// Leer archivo completo
+const readAllFavorites = async () => {
   try {
-    let favorites = [];
-    try {
-      const data = await fs.readFile(FAVORITES_FILE, "utf8");
-      favorites = data ? JSON.parse(data) : [];
-    } catch (err) {
-      if (err.code !== "ENOENT") throw err; // Crear archivo si no existe
-    }
-
-    // Agregar la fecha actual
-    movie.addedAt = new Date().toISOString();
-
-    favorites.push(movie);
-    await fs.writeFile(FAVORITES_FILE, JSON.stringify(favorites, null, 2));
-
-    res.status(201).json({ message: "Película agregada a favoritos" });
-  } catch (error) {
-    console.error("Error al agregar favorito:", error);
-    res.status(500).json({ error: "Error interno al guardar favorito" });
+    const content = await fs.readFile(FAVORITES_FILE, "utf-8");
+    return content ? JSON.parse(content) : [];
+  } catch (err) {
+    if (err.code === "ENOENT") return [];
+    throw err;
   }
 };
 
-// GET /api/favorites – Obtener la lista de películas favoritas
-const getFavorites = async (req, res) => {
-  try {
-    const data = await fs.readFile(FAVORITES_FILE, "utf8");
-    const favorites = data ? JSON.parse(data) : [];
+// Escribir archivo completo
+const writeAllFavorites = async (allFavorites) => {
+  await fs.writeFile(FAVORITES_FILE, JSON.stringify(allFavorites, null, 2));
+};
 
-    // Agregar campo suggestionForTodayScore aleatorio a cada una
-    const enriched = favorites.map((movie) => ({
+// Agregar favorito
+const addFavorite = async (req, res) => {
+  const movie = req.body;
+  const userEmail = req.user.email;
+
+  if (!movie || !movie.id || !movie.title) {
+    return res.status(400).json({ message: "Película inválida" });
+  }
+
+  try {
+    const allFavorites = await readAllFavorites();
+
+    // Buscar entrada del usuario
+    let userData = allFavorites.find((entry) => entry.email === userEmail);
+    if (!userData) {
+      userData = { email: userEmail, favorites: [] };
+      allFavorites.push(userData);
+    }
+
+    const alreadyAdded = userData.favorites.some((fav) => String(fav.id) === String(movie.id));
+    if (alreadyAdded) {
+      return res.status(400).json({ message: "Película ya está en favoritos" });
+    }
+
+    movie.addedAt = new Date().toISOString();
+    userData.favorites.push(movie);
+
+    await writeAllFavorites(allFavorites);
+    res.status(201).json({ message: "Película agregada a favoritos" });
+  } catch (error) {
+    console.error("Error al agregar favorito:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+// Listar favoritos del usuario autenticado
+const getFavorites = async (req, res) => {
+  const userEmail = req.user.email;
+
+  try {
+    const allFavorites = await readAllFavorites();
+    const userData = allFavorites.find((entry) => entry.email === userEmail);
+
+    const userFavorites = userData ? userData.favorites : [];
+
+    const scoredFavorites = userFavorites.map((movie) => ({
       ...movie,
       suggestionForTodayScore: Math.floor(Math.random() * 100),
     }));
 
-    // Ordenar por suggestionForTodayScore descendente
-    enriched.sort((a, b) => b.suggestionForTodayScore - a.suggestionForTodayScore);
+    scoredFavorites.sort((a, b) => b.suggestionForTodayScore - a.suggestionForTodayScore);
 
-    res.json(enriched);
+    res.json(scoredFavorites);
   } catch (error) {
-    if (error.code === "ENOENT") {
-      return res.json([]); // Si el archivo no existe, devolver lista vacía
-    }
     console.error("Error al obtener favoritos:", error);
-    res.status(500).json({ error: "Error interno al leer favoritos" });
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+// Eliminar una película de favoritos
+const deleteFavorite = async (req, res) => {
+  const userEmail = req.user.email;
+  const movieId = req.params.id;
+
+  try {
+    const allFavorites = await readAllFavorites();
+
+    const userData = allFavorites.find((entry) => entry.email === userEmail);
+    if (!userData) {
+      return res.status(404).json({ message: "Usuario sin favoritos" });
+    }
+
+    const initialLength = userData.favorites.length;
+    userData.favorites = userData.favorites.filter((fav) => String(fav.id) !== String(movieId));
+
+    if (userData.favorites.length === initialLength) {
+      return res.status(404).json({ message: "Película no encontrada en favoritos" });
+    }
+
+    await writeAllFavorites(allFavorites);
+    res.json({ message: "Película eliminada de favoritos" });
+  } catch (error) {
+    console.error("Error al eliminar favorito:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
-module.exports = {
-  addFavorite,
-  getFavorites,
-};
+module.exports = { addFavorite, getFavorites, deleteFavorite };

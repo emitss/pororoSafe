@@ -1,18 +1,24 @@
 //Middleware para autenticar usuarios con token
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-dotenv.config();
 
-module.exports = (req, res, next) => {
-  const token = req.headers.authorization;
+const JWT_SECRET = process.env.JWT_SECRET || "claveSecreta123";
 
-  if (!token) return res.status(401).json({ error: "Token no proporcionado" });
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]; // formato: "Bearer TOKEN"
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // opcional si más adelante manejás múltiples usuarios
-    next();
-  } catch (err) {
-    res.status(401).json({ error: "Token inválido" });
+  if (!token) {
+    return res.status(401).json({ message: "Token no proporcionado" });
   }
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: "Token inválido o expirado" });
+    }
+
+    req.user = user; // Guarda los datos del token en la request
+    next();
+  });
 };
+
+module.exports = authenticateToken;

@@ -2,7 +2,7 @@ const fs = require("fs").promises;
 const bcrypt = require("bcryptjs");
 //auth
 const jwt = require("jsonwebtoken");
-
+const { validateRegisterData } = require("./utils/validateRegisterData");
 const USERS_FILE = "./data/users.txt";
 //auth
 const JWT_SECRET = process.env.JWT_SECRET || "claveSecreta123";
@@ -11,8 +11,9 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "2h";
 const registerUser = async (req, res) => {
   const { email, firstName, lastName, password } = req.body;
 
-  if (!email || !firstName || !lastName || !password) {
-    return res.status(400).json({ error: "Todos los campos son obligatorios" });
+  const validation = validateRegisterData({ email, firstName, lastName, password });
+  if (!validation.valid) {
+    return res.status(400).json({ error: validation.error });
   }
 
   try {

@@ -4,5 +4,11 @@
     "firstName": "Juan",
     "lastName": "Pérez",
     "password": "$2b$10$goLwJbLstZaWXm5OUC/4meOJNZAGjqRD5v00f7RxeMJA7WwNgDuBy"
+  },
+  {
+    "email": "usuario1@example.com",
+    "firstName": "Juan1",
+    "lastName": "Pérez1",
+    "password": "$2b$10$PEh3BJNnksWDU1pxBSdnNugzbEGBJmsHMiRDf7yEMMqT/u.nFuHv6"
   }
 ]

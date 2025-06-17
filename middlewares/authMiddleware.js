@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
-//clave secreta para verificar el token. Se usa una de entorno o una por defecto
-const JWT_SECRET = process.env.JWT_SECRET || "claveSecreta123";
+//clave secreta para verificar el token
+const JWT_SECRET = process.env.JWT_SECRET;
 
 //verifica la validez del token enviado en los headers
 const authenticateToken = (req, res, next) => {

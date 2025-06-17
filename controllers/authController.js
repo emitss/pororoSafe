@@ -5,8 +5,7 @@ const { validateRegisterData } = require("../utils/validateRegisterData"); //fun
 
 const USERS_FILE = "./data/users.txt";
 
-//claves y configuracion para JWT
-const JWT_SECRET = process.env.JWT_SECRET || "claveSecreta123";
+const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "2h";
 
 //funcion para registrar un nuevo usuario

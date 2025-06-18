@@ -26,7 +26,8 @@ const registerUserService = async ({ email, firstName, lastName, password }) => 
 const loginUserService = async ({ email, password }) => {
   const JWT_SECRET = process.env.JWT_SECRET;
   const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
-
+  console.log("JWT Secret authService:", JWT_SECRET);
+  console.log("JWT Expiration authService:", JWT_EXPIRES_IN);
   if (!email || !password) {
     return { status: 400, body: { message: "Email y contraseña son requeridos" } };
   }

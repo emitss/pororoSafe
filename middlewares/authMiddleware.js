@@ -1,8 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-//clave secreta para verificar el token
-const JWT_SECRET = process.env.JWT_SECRET;
-
 //verifica la validez del token enviado en los headers
 const authenticateToken = (req, res, next) => {
   //extrae el encabezado de autorización (Bearer TOKEN)
@@ -16,6 +13,10 @@ const authenticateToken = (req, res, next) => {
     return res.status(401).json({ message: "Token no proporcionado" });
   }
 
+  //clave secreta para verificar el token
+  const JWT_SECRET = process.env.JWT_SECRET;
+  console.log("JWT Secret middleware:", JWT_SECRET);
+
   //verificamos si el token es valido usando la clave secreta
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
@@ -23,7 +24,6 @@ const authenticateToken = (req, res, next) => {
     }
 
     req.user = user;
-
     next();
   });
 };

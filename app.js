@@ -4,7 +4,7 @@ const authRoutes = require("./routes/authRoutes");
 const movieRoutes = require("./routes/movieRoutes");
 const favoriteRoutes = require("./routes/favoriteRoutes");
 
-dotenv.config();
+dotenv.config(); //variables de entorno de .env
 const app = express();
 const PORT = process.env.PORT || 3000;
 

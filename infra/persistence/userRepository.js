@@ -2,7 +2,7 @@
 const fs = require("fs").promises;
 const path = require("path");
 
-const USERS_FILE = path.join(__dirname, "..", "..", "..", "data", "users.txt");
+const USERS_FILE = path.join(process.cwd(), "data", "users.txt");
 
 //lee el archivo users.txt
 const readUsers = async () => {

@@ -1,6 +1,7 @@
 //registrar y loguear usuarios
 const bcrypt = require("bcryptjs"); //para hashear y comparar contraseñas
 const jwt = require("jsonwebtoken"); //para generar tokens de autenticación
+const config = require("../infra/config");
 const { validateRegisterData } = require("../utils/validateRegisterData"); //para validar los datos del registro
 const { readUsers, writeUsers } = require("../infra/persistence/userRepository"); //interaccion con users.txt
 
@@ -24,10 +25,6 @@ const registerUserService = async ({ email, firstName, lastName, password }) => 
 };
 
 const loginUserService = async ({ email, password }) => {
-  const JWT_SECRET = process.env.JWT_SECRET;
-  const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
-  console.log("JWT Secret authService:", JWT_SECRET);
-  console.log("JWT Expiration authService:", JWT_EXPIRES_IN);
   if (!email || !password) {
     return { status: 400, body: { message: "Email y contraseña son requeridos" } };
   }
@@ -43,7 +40,7 @@ const loginUserService = async ({ email, password }) => {
     return { status: 400, body: { message: "Credenciales inválidas" } };
   }
 
-  const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  const token = jwt.sign({ email: user.email }, config.JWT_SECRET, { expiresIn: config.JWT_EXPIRES_IN });
   return { status: 200, body: { token } };
 };
 

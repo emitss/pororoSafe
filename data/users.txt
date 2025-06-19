@@ -16,5 +16,11 @@
     "firstName": "Jose",
     "lastName": "Martinez",
     "password": "$2b$10$RQuGxN/Y7otTl9E3RVQdk.ChwG5jYwTCmGQ1MBCfPH/oFebMpQZ1W"
+  },
+  {
+    "email": "usuario3@example.com",
+    "firstName": "Jose",
+    "lastName": "Martinez",
+    "password": "$2b$10$EGglgX4icGvjmKr6E8KzIuLyowunHVOm.S4FSHINUvNWPgbDMi0Ba"
   }
 ]

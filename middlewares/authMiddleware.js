@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const config = require("../infra/config");
 
 //verifica la validez del token enviado en los headers
 const authenticateToken = (req, res, next) => {
@@ -13,12 +14,8 @@ const authenticateToken = (req, res, next) => {
     return res.status(401).json({ message: "Token no proporcionado" });
   }
 
-  //clave secreta para verificar el token
-  const JWT_SECRET = process.env.JWT_SECRET;
-  console.log("JWT Secret middleware:", JWT_SECRET);
-
   //verificamos si el token es valido usando la clave secreta
-  jwt.verify(token, JWT_SECRET, (err, user) => {
+  jwt.verify(token, config.JWT_SECRET, (err, user) => {
     if (err) {
       return res.status(403).json({ message: "Token inválido o expirado" });
     }

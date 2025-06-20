@@ -1,12 +1,12 @@
-const { readAllFavorites, writeAllFavorites } = require("../infra/persistence/favoriteRepository");
+const { readFavorites, writeFavorites } = require("../infra/persistence/favoriteRepository");
 
-// Agrega una película a favoritos
+//agrega una peli a favoritos
 const addFavoriteService = async (userEmail, movie) => {
   if (!movie || !movie.id || !movie.title) {
     return { status: 400, body: { message: "Película inválida" } };
   }
 
-  const allFavorites = await readAllFavorites();
+  const allFavorites = await readFavorites();
 
   let userData = allFavorites.find((entry) => entry.email === userEmail);
   if (!userData) {
@@ -22,14 +22,14 @@ const addFavoriteService = async (userEmail, movie) => {
   movie.addedAt = new Date().toISOString();
   userData.favorites.push(movie);
 
-  await writeAllFavorites(allFavorites);
+  await writeFavorites(allFavorites);
 
   return { status: 201, body: { message: "Película agregada a favoritos" } };
 };
 
-// Obtiene la lista de favoritos ordenada
+//obtiene la lista de favoritos ordenada
 const getFavoritesService = async (userEmail) => {
-  const allFavorites = await readAllFavorites();
+  const allFavorites = await readFavorites();
   const userData = allFavorites.find((entry) => entry.email === userEmail);
   const userFavorites = userData ? userData.favorites : [];
 
@@ -42,9 +42,9 @@ const getFavoritesService = async (userEmail) => {
   return { status: 200, body: scoredFavorites };
 };
 
-// Elimina una película de favoritos
+//elimina una peli de favoritos
 const deleteFavoriteService = async (userEmail, movieId) => {
-  const allFavorites = await readAllFavorites();
+  const allFavorites = await readFavorites();
 
   const userData = allFavorites.find((entry) => entry.email === userEmail);
   if (!userData) {
@@ -58,7 +58,7 @@ const deleteFavoriteService = async (userEmail, movieId) => {
     return { status: 404, body: { message: "Película no encontrada en favoritos" } };
   }
 
-  await writeAllFavorites(allFavorites);
+  await writeFavorites(allFavorites);
   return { status: 200, body: { message: "Película eliminada de favoritos" } };
 };
 

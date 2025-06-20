@@ -1,4 +1,3 @@
-// Recibe la request y llama a los servicios
 const authService = require("../services/authService");
 
 //controlador que maneja la solicitud de registro de usuario

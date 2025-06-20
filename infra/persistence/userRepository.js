@@ -4,7 +4,6 @@ const path = require("path");
 
 const USERS_FILE = path.join(process.cwd(), "data", "users.txt");
 
-//lee el archivo users.txt
 const readUsers = async () => {
   try {
     const data = await fs.readFile(USERS_FILE, "utf8");
@@ -15,7 +14,6 @@ const readUsers = async () => {
   }
 };
 
-//registra el arreglo de usuarios en el archivo
 const writeUsers = async (users) => {
   await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
 };

@@ -1,4 +1,4 @@
-require("dotenv").config(); // Carga las variables del .env
+require("dotenv").config(); //carga las variables del .env
 
 module.exports = {
   JWT_SECRET: process.env.JWT_SECRET,

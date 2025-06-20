@@ -29,5 +29,9 @@
         "addedAt": "2025-06-18T02:19:39.334Z"
       }
     ]
+  },
+  {
+    "email": "usuario3@example.com",
+    "favorites": []
   }
 ]

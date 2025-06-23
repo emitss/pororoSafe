@@ -1,5 +1,5 @@
 const authService = require("../services/authService");
-const { EmailAlreadyInUseError, EmptyFieldsError, UserNotFoundError, InvalidCredentialsError } = require("../services/errors");
+const { EmailAlreadyInUseError, UserNotFoundError, InvalidCredentialsError } = require("../services/errors");
 
 const { validateRegisterData } = require("./validations/validateRegisterData"); //para validar los datos del registro
 
@@ -16,10 +16,10 @@ const registerUserEndpoint = async (req, res) => {
     res.status(201).json({ message });
   } catch (error) {
     if (error instanceof EmailAlreadyInUseError) {
-      return res.status(error.statusCode).json({ error: error.message });
+      return res.status(400).json({ error: error.message });
     }
     console.error("Error inesperado al registrar usuario:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(500).send();
   }
 };
 
@@ -37,7 +37,7 @@ const loginUserEndpoint = async (req, res) => {
       return res.status(401).json({ error: error.message });
     }
     console.error("Error inesperado al iniciar sesión:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(500).send();
   }
 };
 

@@ -19,7 +19,7 @@ const addFavoriteEndpoint = async (req, res) => {
     }
 
     console.error("Error inesperado al agregar favorito:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(500).send();
   }
 };
 
@@ -33,7 +33,7 @@ const getFavoritesEndpoint = async (req, res) => {
     }
 
     console.error("Error al obtener favoritos:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(500).send();
   }
 };
 
@@ -49,11 +49,11 @@ const deleteFavoriteEndpoint = async (req, res) => {
     res.status(200).json({ message });
   } catch (error) {
     if (error instanceof FavoriteMovieNotFoundError || error instanceof UserHasNoFavoritesError) {
-      return res.status(204).send();
+      return res.status(400).json({ error: "No se encuentra la pelicula entre los favoritos" });
     }
 
     console.error("Error al eliminar favorito:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(500).send();
   }
 };
 

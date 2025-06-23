@@ -5,13 +5,6 @@ class UserNotFoundError extends Error {
   }
 }
 
-class EmptyFieldsError extends Error {
-  constructor(message = "Faltan campos requeridos") {
-    super(message);
-    this.name = "EmptyFieldsError";
-  }
-}
-
 class EmailAlreadyInUseError extends Error {
   constructor(email) {
     super(`El email ${email} ya está registrado`);
@@ -54,7 +47,6 @@ class ExternalApiError extends Error {
 }
 
 module.exports = {
-  EmptyFieldsError,
   UserNotFoundError,
   EmailAlreadyInUseError,
   InvalidCredentialsError,

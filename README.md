@@ -50,10 +50,6 @@ cd pororosafe
 ```bash
 PORT=3000
 TMDB_API_KEY= "api key"
-
-USERS_FILE=./data/users.txt
-BCRYPT_SALT_ROUNDS=10
-
 JWT_SECRET= "contra"
 JWT_EXPIRES_IN=1h
 ```

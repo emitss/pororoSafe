@@ -1,21 +1,14 @@
 const bcrypt = require("bcryptjs"); //para hashear y comparar contraseñas
 const jwt = require("jsonwebtoken"); //para generar tokens de autenticación
 const config = require("../infra/config");
-const { validateRegisterData } = require("../utils/validateRegisterData"); //para validar los datos del registro
 const { readUsers, writeUsers } = require("../infra/persistence/userRepository"); //interaccion con users.txt
 //manejo de errores
-const UnauthorizedError = require("./errors/UnauthorizedError");
-const BadRequestError = require("./errors/BadRequestError");
+const { EmailAlreadyInUseError, UserNotFoundError, InvalidCredentialsError } = require("./errors");
 
 const registerUser = async ({ email, firstName, lastName, password }) => {
-  const validation = validateRegisterData({ email, firstName, lastName, password });
-  if (!validation.valid) {
-    throw new BadRequestError(validation.error);
-  }
-
   const users = await readUsers();
   if (users.find((u) => u.email === email)) {
-    throw new BadRequestError("El usuario ya está registrado");
+    throw new EmailAlreadyInUseError(email);
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -27,19 +20,15 @@ const registerUser = async ({ email, firstName, lastName, password }) => {
 };
 
 const loginUser = async ({ email, password }) => {
-  if (!email || !password) {
-    throw new BadRequestError("Email y contraseña son requeridos");
-  }
-
   const users = await readUsers();
   const user = users.find((u) => u.email === email);
   if (!user) {
-    throw new UnauthorizedError();
+    throw new UserNotFoundError(email);
   }
 
   const passwordMatch = await bcrypt.compare(password, user.password);
   if (!passwordMatch) {
-    throw new UnauthorizedError();
+    throw new InvalidCredentialsError();
   }
 
   const token = jwt.sign({ email: user.email }, config.getJwtSecret(), { expiresIn: config.getJwtExpiresIn() });

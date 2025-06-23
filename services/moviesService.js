@@ -1,12 +1,11 @@
 const { searchMovies } = require("../infra/theMovieDB/client");
 
 //gestion de errores
-const ExternalApiError = require("./errors/ExternalApiError");
-const BadRequestError = require("./errors/BadRequestError");
+const { InvalidCredentialsError, ExternalApiError } = require("./errors");
 
 const getMovies = async (keyword) => {
   if (!keyword || typeof keyword !== "string") {
-    throw new BadRequestError();
+    throw new InvalidCredentialsError();
   }
   try {
     const movies = await searchMovies(keyword);

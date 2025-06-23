@@ -1,5 +1,5 @@
 const { getMovies } = require("../services/moviesService");
-const BaseError = require("../services/errors/BaseError");
+const { InvalidCredentialsError } = require("../services/errors");
 
 const getMoviesEndpoint = async (req, res) => {
   try {
@@ -7,7 +7,7 @@ const getMoviesEndpoint = async (req, res) => {
     const movies = await getMovies(keyword);
     res.status(200).json(movies);
   } catch (error) {
-    if (error instanceof BaseError) {
+    if (error instanceof InvalidCredentialsError) {
       return res.status(error.statusCode).json({ error: error.message });
     }
 

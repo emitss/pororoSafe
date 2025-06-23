@@ -4,12 +4,12 @@ const { validateMovieData } = require("../utils/validateMovieData");
 
 const getMoviesEndpoint = async (req, res) => {
   try {
-    const keyword = req.query.keyword || "popular";
-
+    const keyword = req.query.keyword;
     const validation = validateMovieData({ keyword });
-    if (!keyword || typeof keyword !== "string") {
+    if (!validation.valid) {
       return res.status(400).json({ error: validation.error });
     }
+
     const movies = await getMovies(keyword);
     res.status(200).json(movies);
   } catch (error) {

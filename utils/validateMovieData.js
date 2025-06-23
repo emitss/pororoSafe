@@ -1,7 +1,11 @@
 function validateMovieData({ keyword }) {
-  if (!keyword || typeof keyword !== "string") {
-    return { valid: false, error: "Palabra clave inválida" };
+  //si keyword es null o undefined o string vacia
+  if (keyword == null || keyword.trim() === "") {
+    console.log("keyword es null o undefined");
+    return { valid: false, error: "Palabra clave no proporcionada" };
   }
+
+  console.log("keyword válida:", keyword);
   return { valid: true };
 }
 

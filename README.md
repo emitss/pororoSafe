@@ -6,11 +6,10 @@ Este proyecto es una API básica que permite el registro de usuarios y su autent
 
 - Registro de usuarios con validación y hash de contraseña.
 - Login con generación de JWT.
-- Autenticación.
+- Autorización.
 - Agregado, listado y eliminación de películas favoritas.
 - Búsqueda de películas usando [The Movie DB API](https://www.themoviedb.org/documentation/api).
 - Persistencia de usuarios y favoritos.
-- Separación por capas: Controller, Service, Infraestructura.
 
 ## Tecnologías
 
@@ -24,17 +23,11 @@ Este proyecto es una API básica que permite el registro de usuarios y su autent
 
 ### Prerrequisitos
 
-#### Instalación de dependencias:
+- npm y node
+
+### Iniciar el servidor:
 
 - npm install
-  - axios
-  - dotenv
-  - express
-  - bcryptjs
-  - jsonwebtoken
-
-#### Iniciar el servidor:
-
 - node app.js
 - npx nodemmon app.js (opcional)
 
@@ -55,6 +48,10 @@ JWT_EXPIRES_IN=1h
 ```
 
 ## Endpoints
+
+### Postman Collection:
+
+https://martian-rocket-963392.postman.co/workspace/My-Workspace~dbead87e-9a2d-4175-83ab-0fcc2b7f23ec/collection/26131167-222fde9e-efd0-4d6b-96d1-1461ee910286?action=share&source=copy-link&creator=26131167
 
 ### Autenticación
 

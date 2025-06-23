@@ -27,7 +27,7 @@ const getFavoritesEndpoint = async (req, res) => {
     res.status(200).json(scoredFavorites);
   } catch (error) {
     if (error instanceof UserHasNoFavoritesError) {
-      return res.status(404).json({ error: error.message });
+      return res.status(204).json({ error: error.message });
     }
 
     console.error("Error al obtener favoritos:", error);
@@ -47,7 +47,7 @@ const deleteFavoriteEndpoint = async (req, res) => {
     res.status(200).json({ message });
   } catch (error) {
     if (error instanceof FavoriteMovieNotFoundError || error instanceof UserHasNoFavoritesError) {
-      return res.status(404).json({ error: error.message });
+      return res.status(204).json({ error: error.message });
     }
 
     console.error("Error al eliminar favorito:", error);

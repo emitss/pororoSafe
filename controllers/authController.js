@@ -8,8 +8,9 @@ const registerUserEndpoint = async (req, res) => {
     //vallidacion datos de registro(utils)
     const { email, firstName, lastName, password } = req.body;
     const validation = validateRegisterData({ email, firstName, lastName, password });
+
     if (!validation.valid) {
-      throw new EmptyFieldsError(validation.error);
+      return res.status(400).json({ error: validation.error });
     }
 
     const message = await authService.registerUser({ email, firstName, lastName, password });
@@ -28,7 +29,7 @@ const loginUserEndpoint = async (req, res) => {
     //validacion email y contra
     const { email, password } = req.body;
     if (!email || !password) {
-      throw new EmptyFieldsError("Email y contraseña son requeridos");
+      return res.status(400).json({ error: "Email y contraseña son requeridos" });
     }
     const token = await authService.loginUser(req.body);
     res.status(200).json({ token });
@@ -36,6 +37,7 @@ const loginUserEndpoint = async (req, res) => {
     if (error instanceof UserNotFoundError || error instanceof InvalidCredentialsError) {
       return res.status(401).json({ error: error.message });
     }
+    console.error("Error inesperado al iniciar sesión:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };

@@ -1,12 +1,14 @@
 const { addFavorite, getFavorites, deleteFavorite } = require("../services/favoritesService");
 const { MovieAlreadyInFavoritesError, FavoriteMovieNotFoundError, UserHasNoFavoritesError } = require("../services/errors");
+const { validateFavoriteData } = require("../utils/validateFavoriteData");
 
 const addFavoriteEndpoint = async (req, res) => {
   try {
+    //validacion de datos de favoritos(utils)
     const movie = req.body;
-
-    if (!movie || !movie.id || !movie.title) {
-      return res.status(400).json({ error: "Película inválida: se requiere id y título." });
+    const validation = validateFavoriteData({ movie });
+    if (!validation.valid) {
+      return res.status(400).json({ error: validation.error });
     }
 
     const message = await addFavorite(req.user.email, movie);

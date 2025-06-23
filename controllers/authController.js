@@ -8,7 +8,6 @@ const registerUserEndpoint = async (req, res) => {
     //vallidacion datos de registro(utils)
     const { email, firstName, lastName, password } = req.body;
     const validation = validateRegisterData({ email, firstName, lastName, password });
-
     if (!validation.valid) {
       return res.status(400).json({ error: validation.error });
     }

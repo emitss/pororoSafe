@@ -29,7 +29,7 @@ Este proyecto es una API básica que permite el registro de usuarios y su autent
 
 - npm install
 - node app.js
-- npx nodemmon app.js (opcional)
+- npx nodemmon app.js (hot reloading)
 
 ### Clonar el repositorio
 
@@ -51,7 +51,7 @@ JWT_EXPIRES_IN=1h
 
 ### Postman Collection:
 
-https://martian-rocket-963392.postman.co/workspace/My-Workspace~dbead87e-9a2d-4175-83ab-0fcc2b7f23ec/collection/26131167-222fde9e-efd0-4d6b-96d1-1461ee910286?action=share&source=copy-link&creator=26131167
+https://www.postman.com/martian-rocket-963392/workspace/workspace-pblico/collection/26131167-222fde9e-efd0-4d6b-96d1-1461ee910286?action=share&creator=26131167
 
 ### Autenticación
 

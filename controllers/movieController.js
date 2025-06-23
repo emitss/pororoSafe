@@ -1,14 +1,20 @@
-const { getMoviesService } = require("../services/movieService");
+const { getMovies } = require("../services/moviesService");
+const BaseError = require("../services/errors/BaseError");
 
-const getMovies = async (req, res) => {
+const getMoviesEndpoint = async (req, res) => {
   try {
     const keyword = req.query.keyword || "popular";
-    const { status, body } = await getMoviesService(keyword);
-    res.status(status).json(body);
+    const movies = await getMovies(keyword);
+    res.status(200).json(movies);
   } catch (error) {
-    console.error("Error en getMovies:", error);
-    res.status(500).json({ error: "Error al obtener películas" });
+    if (error instanceof BaseError) {
+      return res.status(error.statusCode).json({ error: error.message });
+    }
+
+    //error desconocido
+    console.error("Error inesperado en getMovies:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
-module.exports = { getMovies };
+module.exports = { getMoviesEndpoint };

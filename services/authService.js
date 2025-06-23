@@ -1,19 +1,21 @@
-//registrar y loguear usuarios
 const bcrypt = require("bcryptjs"); //para hashear y comparar contraseñas
 const jwt = require("jsonwebtoken"); //para generar tokens de autenticación
 const config = require("../infra/config");
 const { validateRegisterData } = require("../utils/validateRegisterData"); //para validar los datos del registro
 const { readUsers, writeUsers } = require("../infra/persistence/userRepository"); //interaccion con users.txt
+//manejo de errores
+const UnauthorizedError = require("./errors/UnauthorizedError");
+const BadRequestError = require("./errors/BadRequestError");
 
-const registerUserService = async ({ email, firstName, lastName, password }) => {
+const registerUser = async ({ email, firstName, lastName, password }) => {
   const validation = validateRegisterData({ email, firstName, lastName, password });
   if (!validation.valid) {
-    return { status: 400, body: { error: validation.error } };
+    throw new BadRequestError(validation.error);
   }
 
   const users = await readUsers();
   if (users.find((u) => u.email === email)) {
-    return { status: 400, body: { error: "El usuario ya está registrado" } };
+    throw new BadRequestError("El usuario ya está registrado");
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -21,27 +23,28 @@ const registerUserService = async ({ email, firstName, lastName, password }) => 
 
   await writeUsers([...users, newUser]);
 
-  return { status: 201, body: { message: "Usuario registrado con éxito" } };
+  return "Usuario registrado con éxito";
 };
 
-const loginUserService = async ({ email, password }) => {
+const loginUser = async ({ email, password }) => {
   if (!email || !password) {
-    return { status: 400, body: { message: "Email y contraseña son requeridos" } };
+    throw new BadRequestError("Email y contraseña son requeridos");
   }
 
   const users = await readUsers();
   const user = users.find((u) => u.email === email);
   if (!user) {
-    return { status: 400, body: { message: "Credenciales inválidas" } };
+    throw new UnauthorizedError();
   }
 
   const passwordMatch = await bcrypt.compare(password, user.password);
   if (!passwordMatch) {
-    return { status: 400, body: { message: "Credenciales inválidas" } };
+    throw new UnauthorizedError();
   }
 
-  const token = jwt.sign({ email: user.email }, config.JWT_SECRET, { expiresIn: config.JWT_EXPIRES_IN });
-  return { status: 200, body: { token } };
+  const token = jwt.sign({ email: user.email }, config.getJwtSecret(), { expiresIn: config.getJwtExpiresIn() });
+
+  return token;
 };
 
-module.exports = { registerUserService, loginUserService };
+module.exports = { registerUser, loginUser };

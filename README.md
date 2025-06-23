@@ -6,24 +6,39 @@ Este proyecto es una API básica que permite el registro de usuarios y su autent
 
 - Registro de usuarios con validación y hash de contraseña.
 - Login con generación de JWT.
-- Autenticación con middleware JWT.
+- Autenticación.
 - Agregado, listado y eliminación de películas favoritas.
 - Búsqueda de películas usando [The Movie DB API](https://www.themoviedb.org/documentation/api).
-- Persistencia de usuarios y favoritos en archivos `.txt`.
+- Persistencia de usuarios y favoritos.
 - Separación por capas: Controller, Service, Infraestructura.
 
 ## Tecnologías
 
 - Node.js
 - Express
-- JWT
 - bcryptjs
 - axios
 - dotenv
 
-## Prerrequisitos
+## Ejecución de PororóSafe
 
-### Clonar el repositorio:
+### Prerrequisitos
+
+#### Instalación de dependencias:
+
+- npm install
+  - axios
+  - dotenv
+  - express
+  - bcryptjs
+  - jsonwebtoken
+
+#### Iniciar el servidor:
+
+- node app.js
+- npx nodemmon app.js (opcional)
+
+### Clonar el repositorio
 
 ```bash
 git clone <https://github.com/emitss/pororosafe>
@@ -34,67 +49,13 @@ cd pororosafe
 
 ```bash
 PORT=3000
-TMDB_API_KEY=6d319c1e5c9828208230200640e04fe8
+TMDB_API_KEY= "api key"
 
 USERS_FILE=./data/users.txt
 BCRYPT_SALT_ROUNDS=10
 
-JWT_SECRET=unsecreto123
+JWT_SECRET= "contra"
 JWT_EXPIRES_IN=1h
-```
-
-### Instalación de dependencias:
-
-- npm install
-  - axios
-  - dotenv
-  - express
-  - bcryptjs
-  - jsonwebtoken
-
-### Iniciar el servidor:
-
-- node app.js
-- npx nodemmon app.js (opcional)
-
-## Estructura general del proyecto
-
-```bash
-├── controllers/
-│   ├── authController.js
-│   ├── favoriteController.js
-│   └── movieController.js
-│
-├── data/
-│   ├── users.txt
-│   └── favoritos.txt
-│
-├── infra/
-│   ├── persistence/
-│   │   ├── userRepository.js
-│   │   └── favoriteRepository.js
-│   ├── theMovieDB/
-│   │   └── movieRepository.js
-│   └── config.js
-│
-├── middlewares/
-│   └── authMiddleware.js
-│
-├── routes/
-│   ├── authRoutes.js
-│   ├── favoriteRoutes.js
-│   └── movieRoutes.js
-│
-├── services/
-│   ├── authService.js
-│   ├── favoriteService.js
-│   └── movieService.js
-│
-├── utils/
-│   └── validateRegisterData.js
-│
-├── .env
-└── app.js
 ```
 
 ## Endpoints

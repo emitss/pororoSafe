@@ -1,37 +1,6 @@
 [
   {
     "email": "usuario@example.com",
-    "favorites": [
-      {
-        "id": 124,
-        "title": "Película de Prueba 1",
-        "overview": "Descripción...",
-        "release_date": "2023-05-02",
-        "addedAt": "2025-06-14T01:01:08.583Z"
-      },
-      {
-        "id": 125,
-        "title": "Película de Prueba 2",
-        "overview": "Descripción...",
-        "release_date": "2023-05-02",
-        "addedAt": "2025-06-14T01:02:51.170Z"
-      }
-    ]
-  },
-  {
-    "email": "usuario2@example.com",
-    "favorites": [
-      {
-        "id": 125,
-        "title": "Película de Prueba 45678",
-        "overview": "Descripción...",
-        "release_date": "2023-05-17",
-        "addedAt": "2025-06-18T02:19:39.334Z"
-      }
-    ]
-  },
-  {
-    "email": "usuario3@example.com",
     "favorites": []
   }
 ]

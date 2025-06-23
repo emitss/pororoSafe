@@ -15,7 +15,7 @@ const authenticateToken = (req, res, next) => {
   }
 
   //verificamos si el token es valido usando la clave secreta
-  jwt.verify(token, config.JWT_SECRET, (err, user) => {
+  jwt.verify(token, config.getJwtSecret(), (err, user) => {
     if (err) {
       return res.status(403).json({ message: "Token inválido o expirado" });
     }

@@ -1,11 +1,10 @@
-const axios = require("axios");
-const { TMDB_API_KEY } = require("../config");
+const { getTmdbApiKey } = require("../config");
 
 const searchMovies = async (keyword = "popular") => {
   try {
     const response = await axios.get("https://api.themoviedb.org/3/search/movie", {
       params: {
-        api_key: TMDB_API_KEY,
+        api_key: getTmdbApiKey(),
         query: keyword,
       },
     });

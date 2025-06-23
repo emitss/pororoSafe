@@ -1,7 +1,7 @@
-require("dotenv").config(); //carga las variables del .env
+require("dotenv").config();
 
 module.exports = {
-  JWT_SECRET: process.env.JWT_SECRET,
-  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
-  TMDB_API_KEY: process.env.TMDB_API_KEY,
+  getJwtSecret: () => process.env.JWT_SECRET,
+  getJwtExpiresIn: () => process.env.JWT_EXPIRES_IN,
+  getTmdbApiKey: () => process.env.TMDB_API_KEY,
 };

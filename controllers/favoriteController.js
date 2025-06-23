@@ -1,6 +1,6 @@
 const { addFavorite, getFavorites, deleteFavorite } = require("../services/favoritesService");
 const { MovieAlreadyInFavoritesError, FavoriteMovieNotFoundError, UserHasNoFavoritesError } = require("../services/errors");
-const { validateFavoriteData } = require("../utils/validateFavoriteData");
+const { validateFavoriteData } = require("./validations/validateFavoriteData");
 
 const addFavoriteEndpoint = async (req, res) => {
   try {
@@ -29,7 +29,7 @@ const getFavoritesEndpoint = async (req, res) => {
     res.status(200).json(scoredFavorites);
   } catch (error) {
     if (error instanceof UserHasNoFavoritesError) {
-      return res.status(204).json({ error: error.message });
+      return res.status(204).send();
     }
 
     console.error("Error al obtener favoritos:", error);
@@ -49,7 +49,7 @@ const deleteFavoriteEndpoint = async (req, res) => {
     res.status(200).json({ message });
   } catch (error) {
     if (error instanceof FavoriteMovieNotFoundError || error instanceof UserHasNoFavoritesError) {
-      return res.status(204).json({ error: error.message });
+      return res.status(204).send();
     }
 
     console.error("Error al eliminar favorito:", error);

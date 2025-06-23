@@ -1,14 +1,6 @@
 [
   {
     "email": "usuario@example.com",
-    "favorites": [
-      {
-        "id": 101,
-        "title": "Película de Prueba 1",
-        "overview": "Descripción...",
-        "release_date": "2023-05-17",
-        "addedAt": "2025-06-23T21:59:03.060Z"
-      }
-    ]
+    "favorites": []
   }
 ]

@@ -1,7 +1,7 @@
 const authService = require("../services/authService");
 const { EmailAlreadyInUseError, EmptyFieldsError, UserNotFoundError, InvalidCredentialsError } = require("../services/errors");
 
-const { validateRegisterData } = require("../utils/validateRegisterData"); //para validar los datos del registro
+const { validateRegisterData } = require("./validations/validateRegisterData"); //para validar los datos del registro
 
 const registerUserEndpoint = async (req, res) => {
   try {

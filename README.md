@@ -29,7 +29,7 @@ Este proyecto es una API básica que permite el registro de usuarios y su autent
 
 - npm install
 - node app.js
-- npx nodemmon app.js (hot reloading)
+- npx nodemon app.js (hot reloading)
 
 ### Clonar el repositorio
 

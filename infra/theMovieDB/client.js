@@ -1,3 +1,4 @@
+const axios = require("axios");
 const { getTmdbApiKey } = require("../config");
 
 const searchMovies = async (keyword = "popular") => {

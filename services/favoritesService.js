@@ -31,7 +31,7 @@ const getFavorites = async (userEmail) => {
     throw new UserHasNoFavoritesError(userEmail);
   }
 
-  const scoredFavorites = userFavorites.map((movie) => ({
+  const scoredFavorites = userData.favorites.map((movie) => ({
     ...movie,
     suggestionForTodayScore: Math.floor(Math.random() * 100),
   }));

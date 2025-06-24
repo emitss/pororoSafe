@@ -5,14 +5,12 @@ const { validateRegisterData } = require("./validations/validateRegisterData"); 
 
 const registerUserEndpoint = async (req, res) => {
   try {
-    //vallidacion datos de registro(utils)
-    const { email, firstName, lastName, password } = req.body;
-    const validation = validateRegisterData(email, firstName, lastName, password);
+    const validation = validateRegisterData(req.body);
     if (!validation.valid) {
       return res.status(400).json({ error: validation.error });
     }
 
-    const message = await authService.registerUser(email, firstName, lastName, password);
+    const message = await authService.registerUser(req.body);
     res.status(201).json(message);
   } catch (error) {
     if (error instanceof EmailAlreadyInUseError) {

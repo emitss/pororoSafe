@@ -4,7 +4,7 @@ const { validateMovieData } = require("./validations/validateMovieData");
 const getMoviesEndpoint = async (req, res) => {
   try {
     const keyword = req.query.keyword;
-    const validation = validateMovieData({ keyword });
+    const validation = validateMovieData(keyword);
     if (!validation.valid) {
       return res.status(400).json({ error: validation.error });
     }

@@ -4,9 +4,9 @@ const { validateFavoriteData } = require("./validations/validateFavoriteData");
 
 const addFavoriteEndpoint = async (req, res) => {
   try {
-    //validacion de datos de favoritos(utils)
     const movie = req.body;
-    const validation = validateFavoriteData({ movie });
+    //validacion de datos de favoritos(utils)
+    const validation = validateFavoriteData(movie);
     if (!validation.valid) {
       return res.status(400).json({ error: validation.error });
     }
@@ -25,7 +25,8 @@ const addFavoriteEndpoint = async (req, res) => {
 
 const getFavoritesEndpoint = async (req, res) => {
   try {
-    const { scoredFavorites } = await getFavorites(req.user.email);
+    const email = req.user.email;
+    const { scoredFavorites } = await getFavorites(email);
     res.status(200).json(scoredFavorites);
   } catch (error) {
     if (error instanceof UserHasNoFavoritesError) {
@@ -40,12 +41,13 @@ const getFavoritesEndpoint = async (req, res) => {
 const deleteFavoriteEndpoint = async (req, res) => {
   try {
     const movieId = req.params.id;
+    const email = req.user.email;
 
     if (!movieId) {
       return res.status(400).json({ error: "ID de película no proporcionado" });
     }
 
-    const message = await deleteFavorite(req.user.email, movieId);
+    const message = await deleteFavorite(email, movieId);
     res.status(200).json({ message });
   } catch (error) {
     if (error instanceof FavoriteMovieNotFoundError || error instanceof UserHasNoFavoritesError) {
